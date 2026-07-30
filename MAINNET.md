@@ -41,10 +41,11 @@ Mirror of [SECURITY.md](./SECURITY.md) + ROADMAP Phase F:
 - Recruit ≥8 external validators — see [MAINNET_OPERATORS.md](./MAINNET_OPERATORS.md)
 - Collect gentxs in a published window
 
-### C — Audit
+### C — Audit (self)
 
-- Scope: `pointpay/` app + `x/pnp` + genesis economy scripts
-- Publish report URL before ceremony
+- Team runs [INTERNAL_AUDIT.md](./INTERNAL_AUDIT.md) + `node _deploy/run-internal-audit.mjs`
+- Scope: `pointpay/` · `x/pnp` · genesis/economy scripts
+- Publish filled sign-off (GitHub issue on `pointpay-chain`) before ceremony
 
 ### D — Ceremony (T0)
 

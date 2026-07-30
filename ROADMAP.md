@@ -76,7 +76,7 @@ Venue utility can run for a long time without rushing mainnet:
 ### F — Mainnet readiness
 - [x] Mainnet program docs — [`MAINNET.md`](./MAINNET.md) + [`MAINNET_OPERATORS.md`](./MAINNET_OPERATORS.md) (chain-id `pointpay-1`; **not** renaming dedicated-1)
 - [x] Freeze: live env stays `dedicated_dev` / `pointpay-dedicated-1` until ceremony
-- [ ] External **security audit** published
+- [ ] **Security audit** — self-audit pack [`INTERNAL_AUDIT.md`](./INTERNAL_AUDIT.md) (sign-off + report issue before ceremony)
 - [ ] Genesis **key ceremony** + destroy deploy keys (public proof)
 - [ ] ≥10 independent bonded validators (ICS optional later)
 - [ ] **Block explorer (mainnet)** — `explorer.pointpay.exchange` (testnet explorer stays)
