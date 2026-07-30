@@ -51,10 +51,27 @@ Mirror of [SECURITY.md](./SECURITY.md) + ROADMAP Phase F:
 
 1. Freeze gentx deadline  
 2. Build final `genesis.json` for `pointpay-1`  
-3. Publish SHA-256 in `genesis/CHECKSUMS.md`  
-4. All validators start together  
-5. Publish **destroy deploy keys** proof (checklist below)  
-6. Only then: DNS + venue env → mainnet endpoints  
+3. **Mandatory economy patch** (W1 / W3 / W4) — see checklist below  
+4. Publish SHA-256 in `genesis/CHECKSUMS.md`  
+5. All validators start together  
+6. Publish **destroy deploy keys** proof (checklist below)  
+7. Only then: DNS + venue env → mainnet endpoints  
+
+### Ceremony mint / supply checklist (do not skip)
+
+```bash
+# From pointpay/ app root (economy.json is sibling genesis/economy.json in OSS)
+export DEMO_UPNP=0
+python3 scripts/patch_genesis_economy.py /path/to/pointpay-1-genesis.json
+```
+
+- [ ] Patch **must** run before freeze — app does **not** hardcode zero inflation.
+- [ ] After patch, verify `app_state.mint.params.mint_denom` = `stake` (never `upnp`).
+- [ ] Verify all mint inflation fields are `"0.000000000000000000"`.
+- [ ] Verify `app_state.pnp.params.maxSupply` = `10000000000000` and bank `upnp` supply matches.
+- [ ] `DEMO_UPNP=0` for mainnet (no validator demo faucet carved from sale).
+- [ ] Post-genesis: **never** pass a gov proposal that sets `mint_denom=upnp`.
+- [ ] Patch loads amounts from `genesis/economy.json` (single source; override with `ECONOMY_JSON=` if needed).
 
 ### E — After mainnet live (still no bridge)
 

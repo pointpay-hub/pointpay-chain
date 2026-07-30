@@ -45,8 +45,8 @@ node _deploy/verify-no-chain-on-182.mjs
 
 - [x] Validator consensus **daemon not running** on exchange host `.182`  
   **Evidence:** Live PM2 = `tradeone`, `crash-game`, `botzyai-server` only; no `pointpay-chain`; no ports 26656/26657/1317 listening.
-- [ ] **W8 — Leftover consensus key files on `.182`** — **OPEN / WARN**  
-  **Evidence (2026-07-30):** `/var/www/pointpay-chain` (~151MB) still has `data/config/priv_validator_key.json` + `node_key.json` though daemon is stopped. Not live double-signing while PM2 stays empty, but **ops hygiene risk**. **Action before mainnet:** wipe or securely archive off the exchange host; never start `pointpayd` there again.
+- [x] **W8 — Leftover consensus key files on `.182`** — **CLOSED**  
+  **Evidence (2026-07-30):** Archived to local gitignored `_deploy/backups/182-chain-leftover-*` then wiped `/var/www/pointpay-chain` + `/root/.pointpay`. PM2 still only tradeone/crash/botzy; never start `pointpayd` on exchange again.
 - [x] Dedicated chain host `.230` documented; RPC rate-limited — `INFRA.md` + nginx HTTPS
 - [x] Testnet never labeled `mainnet` in venue env — `PNP_CHAIN_STATUS=dedicated_dev`, `PNP_CHAIN_ID=pointpay-dedicated-1` (verified freeze)
 - [x] Faucet off — `pointpay/config.yml`: `coins: []`, `host: ":0"`  
@@ -55,7 +55,7 @@ node _deploy/verify-no-chain-on-182.mjs
 ## D — Genesis & ceremony readiness
 
 - [x] Economy numbers match `genesis/economy.json` — 600k+200k+100k+100k + 9×1M = 10M  
-  **WARN (W3):** `patch_genesis_economy.py` hardcodes same numbers (does not load JSON) — drift risk; sync before ceremony.
+  **W3 closed:** `patch_genesis_economy.py` loads `economy.json` (or `ECONOMY_JSON=`) and asserts pool+vault sum == maxSupply.
 - [x] Checksums process understood — `genesis/CHECKSUMS.md` + dedicated SHA published
 - [x] Gentx collect script reviewed — `pointpay/scripts/collect-gentxs.sh` present (draft)
 - [x] Destroy-keys template prepared — `MAINNET.md`
@@ -85,14 +85,14 @@ node _deploy/verify-no-chain-on-182.mjs
 
 | ID | Severity | Item | Action before `pointpay-1` |
 |----|----------|------|----------------------------|
-| W1 | Medium | `x/mint` zeroing only via genesis patch | Mandate patch in ceremony runbook; never set `mint_denom=upnp` |
+| W1 | Medium | `x/mint` zeroing only via genesis patch | **Mitigated:** ceremony checklist in MAINNET.md; never set `mint_denom=upnp` |
 | W2 | Low | Invariant = upper bound only | Optional: strengthen to track burns/pools |
-| W3 | Medium | Patch ignores `economy.json` file | Make script load JSON or generate from one source |
-| W4 | Low | `DEMO_UPNP` default 1000 PNP | Set `DEMO_UPNP=0` for mainnet genesis |
+| W3 | Medium | Patch ignored `economy.json` | **Closed:** script loads JSON + sum assert |
+| W4 | Low | `DEMO_UPNP` default 1000 PNP | **Mitigated:** MAINNET checklist requires `DEMO_UPNP=0` |
 | W5 | Low | Scaffold `chain/config.yml` faucet | Align with `pointpay/config.yml` or delete from OSS |
 | W6 | Low | Keeper unit tests blocked on this Windows host | Run in Linux CI / builder |
 | W7 | Info | SPEC says mint in InitGenesis; code funds via bank genesis patch | Update SPEC wording (behavior OK) |
-| W8 | Medium | Leftover `priv_validator_key.json` on `.182` under `/var/www/pointpay-chain` | Wipe/archive before mainnet; keep PM2 empty |
+| W8 | Medium | Leftover keys on `.182` | **Closed:** local archive + remote wipe 2026-07-30 |
 
 **Critical path (mint/freeze/seize/max supply): PASS — no FAIL.**
 
@@ -104,8 +104,8 @@ node _deploy/verify-no-chain-on-182.mjs
 Internal audit date (UTC): 2026-07-30
 Auditors: PointPay Hub ops + Cursor deep review + 2 explore agents (self-audit)
 Automated script result: PASS (12/12)
-Manual findings (summary): WARNs W1–W8 — no critical FAIL; ceremony must enforce patch + DEMO_UPNP=0 + JSON/patch sync + wipe .182 leftover keys
-Verdict: PASS WITH WARNINGS — continue testnet + ceremony prep; do NOT label mainnet until §D OPEN items + W1/W3/W4/W8 done
+Manual findings (summary): W3/W8 closed; W1/W4 mitigated in MAINNET ceremony checklist; residual W2/W5/W6/W7
+Verdict: PASS WITH WARNINGS — continue testnet + ceremony prep; do NOT label mainnet until §D OPEN (sentry/validators/gentx/freeze)
 Report URL: https://github.com/pointpay-hub/pointpay-chain/blob/main/INTERNAL_AUDIT.md
 Signed: PointPay Hub (self-audit complete for Phase F prep)
 ```
@@ -113,8 +113,6 @@ Signed: PointPay Hub (self-audit complete for Phase F prep)
 ## After this pack
 
 Next (ordered):
-1. **W8:** Remove leftover `/var/www/pointpay-chain` consensus keys from `.182`.
-2. Fix W3 (load `economy.json` in patch) + document W1 ceremony checklist.
-3. Company sentry on 2nd VPS; open gentx window ([MAINNET_OPERATORS.md](./MAINNET_OPERATORS.md)).
-4. Collect ≥10 external gentxs → freeze `pointpay-1` → then flip DNS + `PNP_CHAIN_STATUS=mainnet`.
-5. Bridge Phase G last.
+1. Company sentry on 2nd VPS; open gentx window ([MAINNET_OPERATORS.md](./MAINNET_OPERATORS.md)).
+2. Collect ≥10 external gentxs → freeze `pointpay-1` → then flip DNS + `PNP_CHAIN_STATUS=mainnet`.
+3. Bridge Phase G last.

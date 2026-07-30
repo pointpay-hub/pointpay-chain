@@ -2,13 +2,17 @@
 """
 Patch genesis for PointPay economy (chain/genesis/economy.json).
 
-- Fund module accounts with full 10M PNP (upnp base units)
+- Fund module accounts with full maxSupply PNP (upnp base units) from economy.json
 - Zero mint inflation (no uncapped stake inflation theater for PNP)
 - Set pnp.params.maxSupply as string (protojson uint64)
 - Optional: fund validator/alice with DEMO_UPNP for private-dev gas + explorer txs
 
 Usage:
   python3 scripts/patch_genesis_economy.py /path/to/genesis.json
+
+Ceremony (mainnet):
+  DEMO_UPNP=0 python3 scripts/patch_genesis_economy.py genesis.json
+  Never set mint_denom=upnp via gov after genesis (this patch sets mint_denom=stake).
 """
 from __future__ import annotations
 
@@ -18,22 +22,75 @@ import subprocess
 import sys
 from pathlib import Path
 
-MAX_UPNP = 10_000_000 * 1_000_000  # 10M PNP × 6 decimals
-# display PNP → upnp
-POOLS = {
-    "pnp_sale": 600_000 * 1_000_000,
-    "pnp_marketing": 200_000 * 1_000_000,
-    "pnp_creator": 100_000 * 1_000_000,
-    "pnp_founder": 100_000 * 1_000_000,
-}
-for year in range(2026, 2035):
-    POOLS[f"pnp_vault_{year}"] = 1_000_000 * 1_000_000
 
-# Private-dev faucet on the gentx validator account (taken from sale)
+def _find_economy_json() -> Path:
+    pref = os.environ.get("ECONOMY_JSON", "").strip()
+    if pref:
+        p = Path(pref)
+        if not p.is_file():
+            raise SystemExit(f"ECONOMY_JSON not found: {p}")
+        return p
+    here = Path(__file__).resolve()
+    # monorepo: chain/pointpay/scripts → chain/genesis/economy.json
+    # OSS:     pointpay/scripts → ../genesis/economy.json
+    candidates = [
+        here.parents[2] / "genesis" / "economy.json",
+        here.parents[1].parent / "genesis" / "economy.json",
+        Path.cwd() / "genesis" / "economy.json",
+        Path.cwd() / "economy.json",
+    ]
+    for p in candidates:
+        if p.is_file():
+            return p
+    raise SystemExit(
+        "economy.json not found; set ECONOMY_JSON=/path/to/economy.json "
+        f"(searched: {', '.join(str(c) for c in candidates)})"
+    )
+
+
+def load_economy() -> tuple[int, dict[str, int]]:
+    """Return (max_upnp, pools name→upnp) from economy.json — single source of truth."""
+    path = _find_economy_json()
+    eco = json.loads(path.read_text())
+    decimals = int(eco.get("decimals", 6))
+    scale = 10**decimals
+    max_pnp = int(eco["maxSupplyPnp"])
+    max_upnp = max_pnp * scale
+
+    pools: dict[str, int] = {}
+    name_map = {
+        "sale": "pnp_sale",
+        "marketing": "pnp_marketing",
+        "creator": "pnp_creator",
+        "founder": "pnp_founder",
+    }
+    for key, mod in name_map.items():
+        if key not in eco["pools"]:
+            raise SystemExit(f"economy.json pools missing '{key}'")
+        pools[mod] = int(eco["pools"][key]) * scale
+
+    vaults = eco["vaults"]
+    count = int(vaults["count"])
+    each = int(vaults["eachPnp"]) * scale
+    first = int(vaults["firstYear"])
+    for i in range(count):
+        pools[f"pnp_vault_{first + i}"] = each
+
+    pool_sum = sum(pools.values())
+    if pool_sum != max_upnp:
+        raise SystemExit(
+            f"economy.json pool+vault sum {pool_sum} != maxSupply {max_upnp} ({path})"
+        )
+    print(f"Loaded economy from {path}: max_upnp={max_upnp} pools={len(pools)}")
+    return max_upnp, pools
+
+
+# Private-dev faucet on the gentx validator account (taken from sale).
+# Mainnet ceremony MUST set DEMO_UPNP=0.
 DEMO_UPNP = int(os.environ.get("DEMO_UPNP", str(1_000 * 1_000_000)))  # 1000 PNP
 
 
-def load_pool_addrs(root: Path) -> dict[str, str]:
+def load_pool_addrs(root: Path, pool_names: list[str]) -> dict[str, str]:
     # Prefer precomputed file (dedicated hosts may lack Go toolchain).
     pref = os.environ.get("POOL_ADDRS_FILE", "").strip()
     candidates = []
@@ -48,7 +105,7 @@ def load_pool_addrs(root: Path) -> dict[str, str]:
                 parts = line.split()
                 if len(parts) >= 2 and not parts[0].startswith("#"):
                     addrs[parts[0]] = parts[1]
-            missing = [n for n in POOLS if n not in addrs]
+            missing = [n for n in pool_names if n not in addrs]
             if missing:
                 raise SystemExit(f"missing module addresses in {p}: {missing}")
             print(f"Loaded pool addrs from {p}")
@@ -66,7 +123,7 @@ def load_pool_addrs(root: Path) -> dict[str, str]:
         parts = line.split()
         if len(parts) >= 2:
             addrs[parts[0]] = parts[1]
-    missing = [n for n in POOLS if n not in addrs]
+    missing = [n for n in pool_names if n not in addrs]
     if missing:
         raise SystemExit(f"missing module addresses: {missing}\n{out}")
     return addrs
@@ -74,12 +131,15 @@ def load_pool_addrs(root: Path) -> dict[str, str]:
 
 def patch(genesis_path: Path) -> None:
     root = Path(__file__).resolve().parents[1]
-    addrs = load_pool_addrs(root)
+    max_upnp, pools = load_economy()
+    addrs = load_pool_addrs(root, list(pools.keys()))
 
     g = json.loads(genesis_path.read_text())
     app = g.setdefault("app_state", {})
 
     # --- mint: zero inflation (bond denom stays stake; never mint upnp) ---
+    # W1: app does not hardcode this — ceremony MUST run this patch.
+    # After genesis, gov must NEVER set mint_denom=upnp.
     mint = app.setdefault("mint", {})
     params = mint.setdefault("params", {})
     params["mint_denom"] = "stake"
@@ -92,10 +152,10 @@ def patch(genesis_path: Path) -> None:
 
     # --- pnp max supply (string for protojson) ---
     app.setdefault("pnp", {})
-    app["pnp"]["params"] = {"maxSupply": str(MAX_UPNP)}
+    app["pnp"]["params"] = {"maxSupply": str(max_upnp)}
 
     # --- bank balances: keep non-upnp (stake), add pools ---
-    pool_amounts = dict(POOLS)
+    pool_amounts = dict(pools)
     if DEMO_UPNP > 0:
         if pool_amounts["pnp_sale"] < DEMO_UPNP:
             raise SystemExit("DEMO_UPNP exceeds sale pool")
@@ -139,8 +199,8 @@ def patch(genesis_path: Path) -> None:
         for c in b["coins"]:
             totals[c["denom"]] = totals.get(c["denom"], 0) + int(c["amount"])
     supply = [{"denom": d, "amount": str(a)} for d, a in sorted(totals.items())]
-    if totals.get("upnp") != MAX_UPNP:
-        raise SystemExit(f"upnp supply {totals.get('upnp')} != max {MAX_UPNP}")
+    if totals.get("upnp") != max_upnp:
+        raise SystemExit(f"upnp supply {totals.get('upnp')} != max {max_upnp}")
 
     bank = app.setdefault("bank", {})
     bank["balances"] = new_balances
@@ -164,7 +224,7 @@ def patch(genesis_path: Path) -> None:
 
     genesis_path.write_text(json.dumps(g, indent=2) + "\n")
     print(
-        f"Patched {genesis_path}: upnp={MAX_UPNP} pools={len(POOLS)} "
+        f"Patched {genesis_path}: upnp={max_upnp} pools={len(pools)} "
         f"demo_upnp={DEMO_UPNP} alice={alice_addr}"
     )
 
