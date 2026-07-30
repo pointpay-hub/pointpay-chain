@@ -1,0 +1,18 @@
+# Stub: run Ping.pub explorer against PointPay LCD/RPC.
+# Full image build: clone https://github.com/ping-pub/explorer, copy chains/, follow their docker.sh
+#
+# services:
+#   explorer:
+#     image: ping.pub/dashboard   # after local build
+#     ports: ["8088:80"]
+#     volumes:
+#       - ./chains:/usr/share/nginx/html/chains:ro
+
+services:
+  # Placeholder — document-only until explorer image is built on dedicated host
+  explorer-docs:
+    image: alpine:3.20
+    command: ["cat", "/chains/testnet/pointpay.json"]
+    volumes:
+      - ./chains:/chains:ro
+    profiles: ["docs"]

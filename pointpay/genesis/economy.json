@@ -1,0 +1,23 @@
+{
+  "maxSupplyPnp": 10000000,
+  "decimals": 6,
+  "baseDenom": "upnp",
+  "displayDenom": "PNP",
+  "genesisTotalPnp": 1000000,
+  "pools": {
+    "sale": 600000,
+    "marketing": 200000,
+    "creator": 100000,
+    "founder": 100000
+  },
+  "vaults": {
+    "count": 9,
+    "eachPnp": 1000000,
+    "firstYear": 2026
+  },
+  "notes": [
+    "All amounts in display PNP; convert × 1e6 to upnp at genesis.",
+    "No post-genesis admin mint. Vault unlock only via module rules.",
+    "See ../SECURITY.md"
+  ]
+}

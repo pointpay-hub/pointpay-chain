@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PNPScan | PointPay Chain Testnet Explorer</title>
+  <meta name="description" content="PNPScan — PointPay Chain testnet block explorer (BscScan-style)." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="brand" href="#/">
+        <span class="logo-mark">PNP</span>
+        <span class="logo-name">PNPScan</span>
+      </a>
+      <nav class="nav">
+        <a href="#/">Home</a>
+        <div class="drop">
+          <button type="button">Blockchain ▾</button>
+          <div class="drop-menu">
+            <a href="#/blocks">View Blocks</a>
+            <a href="#/txs">View Transactions</a>
+            <a href="#/">Latest Feed</a>
+          </div>
+        </div>
+        <a href="#/validators">Validators</a>
+        <a href="https://api-testnet.pointpay.exchange/" target="_blank" rel="noopener">API</a>
+        <div class="drop">
+          <button type="button">More ▾</button>
+          <div class="drop-menu">
+            <a href="https://pointpay.exchange/pnp" target="_blank" rel="noopener">PNP Hub</a>
+            <a href="https://pointpay.exchange/explorer" target="_blank" rel="noopener">Venue PNPScan</a>
+            <a href="https://rpc-testnet.pointpay.exchange/" target="_blank" rel="noopener">RPC Gateway</a>
+          </div>
+        </div>
+      </nav>
+      <div class="top-right">
+        <form id="miniSearch" class="mini-search">
+          <input type="search" placeholder="Search" aria-label="Quick search" />
+        </form>
+        <span class="net-pill" id="netBadge">PNP Testnet</span>
+      </div>
+    </div>
+  </header>
+
+  <section class="search-band">
+    <div class="wrap">
+      <h1>PointPay Chain <span class="thin">Testnet Explorer</span></h1>
+      <form id="searchForm" class="search-box">
+        <select id="filter" aria-label="Filter">
+          <option value="all">All Filters</option>
+          <option value="block">Blocks</option>
+          <option value="tx">Transactions</option>
+          <option value="addr">Addresses</option>
+        </select>
+        <input id="q" type="search" autocomplete="off" spellcheck="false"
+          placeholder="Search by Address / Txn Hash / Block" />
+        <button type="submit" id="searchBtn" aria-label="Search">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M20 20L16.5 16.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <main class="wrap main">
+    <p id="error" class="error hidden"></p>
+    <div id="detail" class="card detail hidden"></div>
+
+    <section class="stats card" id="stats">
+      <div class="stat">
+        <div class="stat-ico tx">↗</div>
+        <div>
+          <div class="stat-label">TRANSACTIONS</div>
+          <div class="stat-val" id="statTxs">—</div>
+          <div class="stat-sub" id="statTps">—</div>
+        </div>
+      </div>
+      <div class="stat mid">
+        <div class="stat-ico fee">◈</div>
+        <div>
+          <div class="stat-label">NATIVE COIN</div>
+          <div class="stat-val">PNP</div>
+          <div class="stat-sub" id="statSupply">Max 10,000,000</div>
+        </div>
+      </div>
+      <div class="stat">
+        <div class="stat-ico blk">▣</div>
+        <div>
+          <div class="stat-label">LATEST BLOCK</div>
+          <div class="stat-val mono" id="statHeight">—</div>
+          <div class="stat-sub" id="statTime">—</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid2" id="homeGrid">
+      <div class="card feed">
+        <div class="feed-head">
+          <h2>Latest Blocks</h2>
+        </div>
+        <ul class="feed-list" id="blockList"></ul>
+        <a class="view-all" href="#/blocks">VIEW ALL BLOCKS →</a>
+      </div>
+      <div class="card feed">
+        <div class="feed-head">
+          <h2>Latest Transactions</h2>
+        </div>
+        <ul class="feed-list" id="txList"></ul>
+        <a class="view-all" href="#/txs">VIEW ALL TRANSACTIONS →</a>
+      </div>
+    </section>
+
+    <section class="card feed hidden" id="fullListPanel">
+      <div class="feed-head">
+        <h2 id="fullListTitle">Blocks</h2>
+        <a href="#/" class="back">← Back to Home</a>
+      </div>
+      <ul class="feed-list" id="fullList"></ul>
+    </section>
+
+    <section class="card feed hidden" id="validatorsPanel">
+      <div class="feed-head">
+        <h2>Validators</h2>
+        <a href="#/" class="back">← Back to Home</a>
+      </div>
+      <ul class="feed-list" id="validatorList"></ul>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <div>
+        <strong>PNPScan</strong>
+        <span class="muted"> Powered by PointPay Chain · chain-id <code id="footChain">pointpay-dedicated-1</code></span>
+      </div>
+      <div class="footer-links">
+        <a href="https://rpc-testnet.pointpay.exchange/status" target="_blank" rel="noopener">RPC</a>
+        <a href="https://api-testnet.pointpay.exchange/" target="_blank" rel="noopener">LCD</a>
+        <a href="https://pointpay.exchange" target="_blank" rel="noopener">Exchange</a>
+      </div>
+    </div>
+  </footer>
+  <script src="/app.js"></script>
+</body>
+</html>

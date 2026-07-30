@@ -1,0 +1,24 @@
+{
+  "maxSupplyPnp": 10000000,
+  "decimals": 6,
+  "baseDenom": "upnp",
+  "displayDenom": "PNP",
+  "genesisTotalPnp": 1000000,
+  "pools": {
+    "sale": 600000,
+    "marketing": 200000,
+    "creator": 100000,
+    "founder": 100000
+  },
+  "vaults": {
+    "count": 9,
+    "eachPnp": 1000000,
+    "firstYear": 2026
+  },
+  "notes": [
+    "All amounts in display PNP; convert × 1e6 to upnp at genesis.",
+    "BEST PATH: create entire maxSupply (10M) at genesis into module accounts (sale/marketing/creator/founder + 9 vaults). No post-genesis mint in binary.",
+    "genesisTotalPnp 1M = liquid genesis pools only; vaults hold the other 9M locked at genesis.",
+    "See ../SECURITY.md and ../ROADMAP.md — do not skip phases."
+  ]
+}

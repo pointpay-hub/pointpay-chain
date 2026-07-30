@@ -1,0 +1,17 @@
+syntax = "proto3";
+package pointpay.pnp;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "pointpay/pnp/params.proto";
+
+option go_package = "github.com/pointpay/pointpay/x/pnp/types";
+
+// GenesisState defines the pnp module's genesis state.
+message GenesisState {
+  // params defines all the parameters of the module.
+  Params params = 1 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+}

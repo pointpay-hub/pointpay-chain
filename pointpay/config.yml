@@ -1,0 +1,36 @@
+# Ignite local config — DEV / private testnet ONLY.
+# Production genesis comes from ceremony + economy.json (see ../ROADMAP.md).
+# Faucet disabled. Bond denom = stake for CometBFT; user asset = upnp (PNP).
+
+version: 1
+validation: sovereign
+
+accounts:
+  - name: alice
+    coins:
+      - 1000000000stake
+      - 0upnp
+  - name: bob
+    coins:
+      - 500000000stake
+      - 0upnp
+
+# Faucet OFF — never enable for shared/public networks
+faucet:
+  name: alice
+  coins: []
+  host: ":0"
+
+client:
+  openapi:
+    path: docs/static/openapi.yml
+
+validators:
+  - name: alice
+    bonded: 100000000stake
+  - name: validator1
+    bonded: 100000000stake
+  - name: validator2
+    bonded: 100000000stake
+  - name: validator3
+    bonded: 100000000stake

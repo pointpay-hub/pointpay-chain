@@ -1,0 +1,44 @@
+{
+  "chain_name": "pointpay-dedicated-1",
+  "api": [
+    {
+      "address": "http://176.123.2.230/lcd",
+      "provider": "PointPay"
+    },
+    {
+      "address": "https://api-testnet.pointpay.exchange",
+      "provider": "PointPay-DNS"
+    }
+  ],
+  "rpc": [
+    {
+      "address": "http://176.123.2.230/rpc",
+      "provider": "PointPay"
+    },
+    {
+      "address": "https://rpc-testnet.pointpay.exchange",
+      "provider": "PointPay-DNS"
+    }
+  ],
+  "sdk_version": "0.50.14",
+  "coin_type": "118",
+  "min_tx_fee": "500",
+  "assets": [
+    {
+      "base": "upnp",
+      "symbol": "PNP",
+      "exponent": "6",
+      "coingecko_id": "",
+      "logo": ""
+    }
+  ],
+  "addr_prefix": "pnp",
+  "theme_color": "#c9a227",
+  "logo": "",
+  "keplr_features": [],
+  "keplr_price_step": {
+    "low": 0.001,
+    "average": 0.0025,
+    "high": 0.004
+  }
+}

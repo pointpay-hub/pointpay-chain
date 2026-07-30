@@ -1,0 +1,13 @@
+# Ignite / build noise
+vue/
+release/
+.idea/
+.vscode/
+.DS_Store
+*.dot
+*.log
+*.ign
+.pointpay/
+data/
+config/node_key.json
+config/priv_validator_key.json

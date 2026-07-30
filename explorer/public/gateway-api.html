@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PointPay LCD API — Testnet</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root { --bg:#0b0e11; --line:#2b3139; --text:#eaecef; --muted:#848e9c; --gold:#f0b90b; --blue:#0784c3; --green:#0ecb81; }
+    *{box-sizing:border-box} body{margin:0;font-family:DM Sans,system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:grid;place-items:center;padding:1.5rem}
+    .card{width:min(520px,100%);background:linear-gradient(180deg,#1e2329,#0b0e11);border:1px solid var(--line);border-radius:14px;padding:1.5rem}
+    .mark{width:42px;height:42px;border-radius:10px;display:grid;place-items:center;font:700 11px/1 DM Sans;color:var(--blue);border:1px solid rgba(7,132,195,.45);background:rgba(7,132,195,.12);margin-bottom:1rem}
+    h1{margin:0 0 .35rem;font-size:1.35rem} p{margin:0 0 1rem;color:var(--muted);font-size:14px;line-height:1.5}
+    .row{display:flex;justify-content:space-between;gap:1rem;padding:.65rem 0;border-top:1px solid var(--line);font-size:13px}
+    .k{color:var(--muted)} .v{font-family:IBM Plex Mono,monospace;color:var(--green)}
+    .actions{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1.15rem}
+    a.btn{display:inline-block;padding:.7rem 1rem;border-radius:10px;font-weight:600;font-size:13px;text-decoration:none}
+    a.primary{background:var(--gold);color:#0b0e11} a.ghost{background:#2b3139;color:var(--text)}
+    code{color:var(--gold);font-family:IBM Plex Mono,monospace;font-size:12px}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="mark">LCD</div>
+    <h1>PointPay Chain REST (LCD)</h1>
+    <p>Cosmos SDK REST API for testnet <code>pointpay-dedicated-1</code>. Browse blocks &amp; balances in PNPScan — keep this host for API clients.</p>
+    <div class="row"><span class="k">Network</span><span class="v" id="net">…</span></div>
+    <div class="row"><span class="k">Node</span><span class="v" id="mon">…</span></div>
+    <div class="actions">
+      <a class="btn primary" href="https://testnet-explorer.pointpay.exchange/">Open PNPScan</a>
+      <a class="btn ghost" href="/cosmos/base/tendermint/v1beta1/node_info">node_info</a>
+      <a class="btn ghost" href="/static/openapi.yml">OpenAPI</a>
+    </div>
+  </div>
+  <script>
+    fetch('/cosmos/base/tendermint/v1beta1/node_info').then(r=>r.json()).then(j=>{
+      const n=j.default_node_info||{};
+      net.textContent=n.network||'—';
+      mon.textContent=n.moniker||'—';
+    }).catch(()=>{net.textContent='offline'});
+  </script>
+</body>
+</html>

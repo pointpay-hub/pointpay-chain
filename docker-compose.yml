@@ -1,0 +1,31 @@
+# Dedicated local/dev chain stack — do NOT point this at the exchange VPS as "mainnet".
+# Usage (Docker Desktop running):
+#   docker compose -f chain/docker-compose.yml build
+#   docker compose -f chain/docker-compose.yml run --rm pointpayd version
+
+services:
+  pointpayd:
+    build:
+      context: ./pointpay
+      dockerfile: Dockerfile
+    image: pointpayd:local
+    container_name: pointpayd-build
+    profiles: ["build"]
+
+  # Single-node private testnet placeholder — init manually after binary works.
+  # Public testnet / mainnet = separate hosts (see INFRA.md).
+  chain-dev:
+    image: pointpayd:local
+    container_name: pointpay-chain-dev
+    profiles: ["dev"]
+    volumes:
+      - pointpay_dev_data:/home/pointpay/.pointpay
+    ports:
+      - "26657:26657"
+      - "1317:1317"
+      - "9090:9090"
+    command: ["version"]
+    restart: "no"
+
+volumes:
+  pointpay_dev_data:
