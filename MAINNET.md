@@ -29,11 +29,11 @@ Mirror of [SECURITY.md](./SECURITY.md) + ROADMAP Phase F:
 
 ## Phases
 
-### A — OSS (in progress)
+### A — OSS (done)
 
-- Repo: `pointpay-hub/pointpay-chain` (binary + docs)
-- Explorer UI OSS: `pointpay-hub/pnpscan`
-- Tag testnet builds; publish genesis checksums for dedicated testnet
+- Repo: https://github.com/pointpay-hub/pointpay-chain (binary + docs)
+- Explorer UI OSS: https://github.com/pointpay-hub/pnpscan
+- Tag: `v0.1.0-testnet` (dedicated-1 genesis SHA in CHECKSUMS.md)
 
 ### B — Operators
 

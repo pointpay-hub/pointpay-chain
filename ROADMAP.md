@@ -61,7 +61,7 @@ Venue utility can run for a long time without rushing mainnet:
 - [x] LICENSE (Apache-2.0 in `chain/pointpay/`)
 - [x] Build from source docs (`chain/pointpay/BUILD.md`)
 - [x] CONTRIBUTING + [`OSS_PUBLISH.md`](./OSS_PUBLISH.md) checklist
-- [~] Public GitHub — org `pointpay-hub`; push via `_deploy/push-oss-github.mjs` → `pointpay-chain` + `pnpscan` (needs `GITHUB_TOKEN`)
+- [x] Public GitHub — [`pointpay-hub/pointpay-chain`](https://github.com/pointpay-hub/pointpay-chain) + [`pointpay-hub/pnpscan`](https://github.com/pointpay-hub/pnpscan); tag `v0.1.0-testnet`
 - [x] Genesis draft + checksums published (private-dev) — see [`genesis/CHECKSUMS.md`](./genesis/CHECKSUMS.md)
 
 ### E — Long public testnet
@@ -116,7 +116,7 @@ Venue utility can run for a long time without rushing mainnet:
 | Dedicated host `.230` (`pointpay-dedicated-1`) | **Live** — `/var/www/pointpay-chain`, PM2 `pointpay-chain`; genesis in [`CHECKSUMS.md`](./genesis/CHECKSUMS.md) — **not** public mainnet |
 | Exchange `.182` private-dev | Stopped after cutover (cold data may remain) |
 | Genesis checksum | [`genesis/CHECKSUMS.md`](./genesis/CHECKSUMS.md) |
-| OSS publish docs | [`OSS_PUBLISH.md`](./OSS_PUBLISH.md) — target `pointpay-hub/pointpay-chain` + `pnpscan` |
+| OSS publish | **Live** — [pointpay-chain](https://github.com/pointpay-hub/pointpay-chain) · [pnpscan](https://github.com/pointpay-hub/pnpscan) · tag `v0.1.0-testnet` |
 | Mainnet program | [`MAINNET.md`](./MAINNET.md) — prep only; **no mainnet label yet** |
 | Dedicated cloud host provisioned | **Done** — `176.123.2.230:2222` (`chain-testnet`) |
 | Public HTTPS RPC / LCD / explorer | **Live testnet** — rpc/api/testnet-explorer.pointpay.exchange |
