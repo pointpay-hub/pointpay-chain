@@ -83,7 +83,26 @@ Copy [`../_deploy/chain-server.config.example.json`](../_deploy/chain-server.con
 | Host | SSH | Role | Notes |
 |------|-----|------|--------|
 | `176.123.2.230` | port **2222** | `chain-testnet` (dedicated) | Active: `pointpay-dedicated-1`, PM2 `pointpay-chain`. Nginx: `/rpc/`→26657, `/lcd/`→1317 (+ hostnames when DNS ready). Auth via `CHAIN_SSH_PASSWORD` / `BOTZY_SSH_PASSWORD`. **Not** public mainnet. |
-| `185.139.214.182` | key (`server.config.json`) | exchange | `tradeone` / crash / botzy — **no** consensus after cutover; cold `/var/www/pointpay-chain` backup OK |
+| _(pending)_ | TBD | `chain-sentry` (company) | Non-validating full node. Bootstrap: `node _deploy/bootstrap-sentry.mjs` — see [SENTRY.md](./SENTRY.md). Must be ≠ `.182` and ≠ `.230`. |
+| `185.139.214.182` | key (`server.config.json`) | exchange | `tradeone` / crash / botzy — **no** consensus; leftover chain tree wiped 2026-07-30 |
+
+## Peers list
+
+Public: https://testnet-explorer.pointpay.exchange/peers.json  
+
+Live seed (verified): `5fa037a21adfe1f681bb7cf86602de39a7fd5c22@176.123.2.230:26656`
+
+Refresh seed (+ optional sentry/extra peers) — requires `CHAIN_SSH_PASSWORD` or `BOTZY_SSH_PASSWORD`:
+
+```bash
+export CHAIN_FORCE_PASSWORD=1
+export BOTZY_SSH_PASSWORD='…'   # dedicated .230
+# After company sentry is online:
+export SENTRY_PEER='<sentry_node_id>@<sentry_public_ip>:26656'
+node _deploy/publish-peers.mjs
+```
+
+Schema: `seed` (validator), `peers` (array of additional dial strings), genesis SHA, RPC/LCD/explorer URLs.
 
 ## Exchange VPS
 

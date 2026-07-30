@@ -32,9 +32,20 @@ curl -s https://testnet-explorer.pointpay.exchange/peers.json | jq .
 | Role | Purpose |
 |------|---------|
 | **Full node / sentry** | Independent RPC, verify state, help soak P2P |
+| **Company sentry** | PointPay 2nd VPS — see [SENTRY.md](./SENTRY.md) (non-validating) |
 | **Validator (later)** | Only after multi-node genesis / gentx ceremony — not for this single-node genesis |
 
 Today’s genesis has **one** bonded validator. External operators should join as **non-validating full nodes** first.
+
+## Register interest
+
+Comment on the GitHub issue **Testnet full-node operators wanted** in https://github.com/pointpay-hub/pointpay-chain with:
+
+- Operator name / contact  
+- Your planned peer string (`id@ip:26656`) after sync  
+- Whether you want to be considered for future `pointpay-1` gentx  
+
+Mainnet gentx is **not** open yet — see [MAINNET_OPERATORS.md](./MAINNET_OPERATORS.md).
 
 ## Quick join (Ubuntu 22.04+)
 
@@ -72,7 +83,7 @@ Manual outline:
 
 ## Next (still Phase E)
 
-- [ ] Publish rotating public peer list
-- [ ] Second company sentry (different AS / DC)
+- [x] Publish rotating public peer list — `peers.json` + `node _deploy/publish-peers.mjs`
+- [ ] Second company sentry (different AS / DC) — scripts ready ([SENTRY.md](./SENTRY.md)); waiting on 2nd VPS
 - [ ] Chaos: kill RPC, upgrade dry-run, state-sync doc
-- [ ] Invite 3–5 external full-node operators
+- [x] Invite external full-node operators — GitHub issue + this guide

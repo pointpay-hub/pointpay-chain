@@ -59,7 +59,7 @@ node _deploy/verify-no-chain-on-182.mjs
 - [x] Checksums process understood — `genesis/CHECKSUMS.md` + dedicated SHA published
 - [x] Gentx collect script reviewed — `pointpay/scripts/collect-gentxs.sh` present (draft)
 - [x] Destroy-keys template prepared — `MAINNET.md`
-- [ ] Company sentry on second VPS — **OPEN**
+- [ ] Company sentry on second VPS — **OPEN** (scripts ready: [SENTRY.md](./SENTRY.md), `_deploy/bootstrap-sentry.mjs`; waiting on host)
 - [ ] External validators ≥10 — **OPEN**
 - [ ] Gentx window executed — **OPEN**
 - [ ] Mainnet genesis freeze + `verify-mainnet-freeze.mjs` green — **OPEN**
@@ -113,6 +113,7 @@ Signed: PointPay Hub (self-audit complete for Phase F prep)
 ## After this pack
 
 Next (ordered):
-1. Company sentry on 2nd VPS; open gentx window ([MAINNET_OPERATORS.md](./MAINNET_OPERATORS.md)).
-2. Collect ≥10 external gentxs → freeze `pointpay-1` → then flip DNS + `PNP_CHAIN_STATUS=mainnet`.
-3. Bridge Phase G last.
+1. Paste 2nd VPS → `node _deploy/bootstrap-sentry.mjs` → `publish-peers.mjs` ([SENTRY.md](./SENTRY.md)).
+2. Recruit external full nodes via GitHub issue #1; soak testnet.
+3. Collect ≥10 external gentxs → freeze `pointpay-1` → then flip DNS + `PNP_CHAIN_STATUS=mainnet`.
+4. Bridge Phase G last.
