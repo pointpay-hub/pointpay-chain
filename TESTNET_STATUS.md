@@ -128,15 +128,15 @@ _None — sentry sync complete. See remaining ops below._
 - [x] `chain/scripts/verify-testnet-sync.sh` — sync check + peer string for registration
 - [x] Health report — `_deploy/ops/67-testnet-health.mjs`
 - [x] Upgrade dry-run doc — [UPGRADE_DRYRUN.md](./UPGRADE_DRYRUN.md)
-- [ ] **Post** GitHub issue / social using OPERATORS_WANTED.md (manual)
-- [ ] Invite **external full-node operators** ([TESTNET_OPERATORS.md](./TESTNET_OPERATORS.md))
+- [x] **Post** GitHub issue — [#2 operators wanted](https://github.com/pointpay-hub/pointpay-chain/issues/2)
+- [ ] Invite **external full-node operators** (share issue link)
 - [ ] Optional **2nd validator** on separate VPS (`create-validator` — not on exchange or same IP as validator)
 - [ ] Run upgrade dry-run + chaos (RPC kill test) per UPGRADE_DRYRUN.md
-- [ ] Keep PNPScan fixes deployed via `65-deploy-pnpscan-testnet.mjs`
+- [x] Keep PNPScan fixes deployed via `65-deploy-pnpscan-testnet.mjs`
 
 ### Optional product
 
-- [ ] Sync venue `pointpay.exchange/explorer` UI with testnet PNPScan features
+- [x] Sync venue `pointpay.exchange/explorer` — embeds full testnet PNPScan iframe
 - [ ] Server-side 24h `change24h` on VPS if external API access improves (browser workaround live on landing)
 
 ### Mainnet (later — do not rush)
@@ -177,9 +177,12 @@ Config: copy [chain-server.config.example.json](./chain-server.config.example.js
 
 `peers.json` refresh uses SSH on the chain host — keep that script private; contact ops to list your peer after sync.
 
----
+### Exchange monorepo (private GitHub)
 
-## Monthly cost (approx)
+- Repo: **pointpay-hub/pointpay-exchange** (private — no `.env`, deploy passwords, or HD mnemonics)
+- Public chain code: [pointpay-chain](https://github.com/pointpay-hub/pointpay-chain) · [pnpscan](https://github.com/pointpay-hub/pnpscan)
+
+---
 
 | Item | Cost |
 |------|------|
