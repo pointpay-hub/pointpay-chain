@@ -1,0 +1,10 @@
+{
+  "host": "YOUR_CHAIN_HOST",
+  "port": 2222,
+  "username": "root",
+  "explorerDir": "/var/www/pointpay-explorer",
+  "role": "chain-testnet",
+  "chainId": "pointpay-dedicated-1",
+  "moniker": "pp-dedicated-1",
+  "notes": "Copy to chain-server.config.json locally. Auth: CHAIN_SSH_PASSWORD or BOTZY_SSH_PASSWORD env — never commit passwords."
+}

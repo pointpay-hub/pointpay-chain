@@ -2,30 +2,42 @@
 
 Use this for user/support replies. Keep it short and honest.
 
-## Live today (product)
+## PNP coin — complete on PointPay
 
 | Thing | URL / where | What it is |
 |-------|-------------|------------|
 | Exchange | https://pointpay.exchange | Spot / venue accounts |
-| PNP Hub | https://pointpay.exchange/pnp | **Custodial venue PNP** (ledger balance) — welcome, stake, missions, fee-in-PNP |
-| Crash PNP | https://play.pointpay.exchange | Crash bets can use venue PNP (server rail) |
-| Venue explorer | https://pointpay.exchange/explorer | PNPScan UI fed by dedicated testnet RPC |
-| Public testnet explorer | https://testnet-explorer.pointpay.exchange | Same chain, public BscScan-style UI |
-| Testnet RPC / LCD | `rpc-testnet` / `api-testnet`.pointpay.exchange | Dedicated node `pointpay-dedicated-1` |
+| **PNP Hub (coin)** | https://pointpay.exchange/pnp | Buy, sell, stake, missions, fee-in-PNP — **max 1 crore worldwide** |
+| Crash PNP | https://play.pointpay.exchange | **PointPay Play** — SSO from Hub; PNP bets via venue ledger (90/4/3/3). HD crash deposits frozen (`CRASH_HD_DEPOSITS=0`) — fund on Hub only. |
+| **Withdraw to BSC** | Hub (when enabled) | Same PNP coin in MetaMask / Trust on BNB Smart Chain |
+| Supply API | `/api/public/pnp/supply` | Global cap breakdown |
+| Explorer (optional) | testnet-explorer | Dev/testnet chain view |
 
-## Not live / do not claim
+**PNP = one coin, one global cap (1 crore).** Hub + BSC + future native chain share the same supply — never 1 crore per network.
 
-- **Not mainnet.** Chain status is `dedicated_dev` / public testnet soak — not Cosmos Hub ICS, not ≥10 independent validators.
-- **Venue PNP ≠ self-custody coin.** Hub balances are exchange ledger. Users cannot withdraw native `pnp1…` yet (bridge is Phase G — later).
-- **Not BEP20 “the coin”.** Do not tell users PNP is a BSC token. Native denom is `upnp` on PointPay Chain (testnet).
-- **No “Bitcoin-grade / hackproof”** wording.
+## Parked (later — users + funds)
+
+- External validators / mainnet ceremony  
+- Native `pnp1…` withdraw (PointPay Chain mainnet)  
+- Extra EVM chains (ETH, Polygon) — same cap rules  
 
 ## One-line answers
 
-- “Is PNP on-chain?” → Venue PNP is custodial on PointPay. A dedicated **testnet** chain exists for explorer/dev; **mainnet self-custody is not launched.**
-- “Can I send PNP to MetaMask?” → Not as the native coin today. Venue PNP stays in your PointPay account.
-- “Is the explorer mainnet?” → **Testnet.** https://testnet-explorer.pointpay.exchange
+- “Is PNP live?” → **Yes** — PNP coin on Hub; 1 crore max total.  
+- “MetaMask?” → **Yes on BSC** when withdraw enabled (add PNP token on BSC network).  
+- “Is it mainnet chain?” → Native chain is testnet soak; **coin product is live on Hub**.  
+- “1 crore har network pe?” → **Nahi** — poore world mein sirf 1 crore combined.
 
-## Scope freeze
+## Env freeze (chain label)
 
-Until product owners explicitly start **mainnet track**: no OSS publish, no second sentry, no bridge, no audit sprint as blockers. Fix only production bugs.
+- `PNP_CHAIN_STATUS=dedicated_dev`  
+- `PNP_CHAIN_ID=pointpay-dedicated-1`  
+
+Enable BSC wallets separately:
+
+```env
+PNP_EVM_WITHDRAW_ENABLED=true
+PNP_BEP20_CONTRACT=0x...
+```
+
+See [PNP_COIN.md](./PNP_COIN.md) · [PNP_WALLETS.md](./PNP_WALLETS.md)

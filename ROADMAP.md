@@ -25,7 +25,13 @@ Venue utility can run for a long time without rushing mainnet:
 
 **Rule:** Do **not** advertise “Bitcoin-grade live chain” until Phase E–F below are done.
 
-**Product-complete freeze (Jul 2026):** Exchange + venue PNP is the ship target. Skip OSS GitHub, sentry VPS, Ping.pub clone, and Phase F–G (audit / ICS / bridge) until explicitly unfrozen. Support copy: [`SUPPORT_LIVE_VS_MAINNET.md`](./SUPPORT_LIVE_VS_MAINNET.md). Smoke: `node _deploy/smoke-critical-path.mjs`.
+**Product-complete freeze (Jul 2026 — ACTIVE):**  
+**Ship target = exchange + custodial venue PNP only.** That track is **done** (Hub, stake, fees, missions, crash rail, honest copy).  
+
+**Parked until users + funding (do not block product):** sentry VPS, external validator recruit, gentx / `pointpay-1` ceremony, mainnet DNS label, ICS, Phase G bridge. Keep `PNP_CHAIN_STATUS=dedicated_dev`. Testnet node `.230` may keep running for explorer/dev.  
+
+Support: [`SUPPORT_LIVE_VS_MAINNET.md`](./SUPPORT_LIVE_VS_MAINNET.md). Smoke: `node _deploy/smoke-critical-path.mjs`.  
+OSS already public (`pointpay-hub/pointpay-chain`) — no need to re-do; just don’t rush mainnet label.
 
 ---
 
@@ -90,10 +96,15 @@ Venue utility can run for a long time without rushing mainnet:
 - [ ] Public disclosure of custody risk
 - [ ] Raise caps only with proven ops history
 
-### H — Optional later (never confuse with “the coin”)
-- [ ] Wrapped PNP on BSC/ETH for liquidity — labeled **wrap**, not the coin
-- [ ] IBC to other Cosmos chains
-- [ ] DEX listings of native or wrap
+### H — EVM wrap (MetaMask / Trust) — optional, not “the coin”
+
+See **[PNP_WALLETS.md](./PNP_WALLETS.md)** + [`evm/PNP.sol`](./evm/PNP.sol).
+
+- [ ] Deploy wPNP BEP20 on BSC + mint to hot wallet  
+- [ ] Enable Hub withdraw (`PNP_EVM_WITHDRAW_*` env)  
+- [ ] Wrapped PNP on BSC/ETH for liquidity — labeled **wrap**, not the coin  
+- [ ] IBC to other Cosmos chains  
+- [ ] DEX listings of native or wrap  
 
 ---
 

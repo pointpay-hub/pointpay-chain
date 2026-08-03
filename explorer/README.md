@@ -4,7 +4,22 @@ BSCScan-style UX for native PNP: blocks, txs, addresses, `upnp` balances.
 
 | Network | URL (planned) | Status |
 |---------|----------------|--------|
-| Dedicated PNPScan | `https://testnet-explorer.pointpay.exchange/` | Live BscScan-style UI — `_deploy/setup-pingpub-230.mjs` |
+## PNPScan features (testnet)
+
+| Menu | Route | Source |
+|------|-------|--------|
+| Transactions | `#/txs` | Last ~80 blocks via RPC |
+| Pending Transactions | `#/pending` | Tendermint `unconfirmed_txs` |
+| View Blocks | `#/blocks` | RPC block headers |
+| Top Accounts | `#/accounts` | LCD balances · recent activity |
+| Validators | `#/validators` | LCD staking |
+| PNP Token | `#/token/pnp` | LCD bank supply |
+
+**More ▾ (BscScan-style mega menu):** Unit/Base64/UTF-8/Block-Date converters, Message Type lookup, API docs, Broadcast tx, CSV export, Tx decoder/encoder, Balance & Supply checkers. EVM-only items (Verify Contract, Vyper, Bytecode…) show Cosmos N/A with BscScan link.
+
+Deploy: copy `public/` to the explorer nginx root on `.230` (see `chain/INFRA.md`).
+
+**Ops checklist:** [../TESTNET_STATUS.md](../TESTNET_STATUS.md) · Deploy: `node scripts/ops/65-deploy-pnpscan-testnet.mjs` (from chain repo root; SSH via env)
 | IP fallback | `http://176.123.2.230:8080/` | Same UI |
 | Venue PNPScan | `https://pointpay.exchange/explorer` | Live — proxies dedicated RPC/LCD |
 | Public testnet DNS | `https://testnet-explorer.pointpay.exchange` | Pending A record + certbot |

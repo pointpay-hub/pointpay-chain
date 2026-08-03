@@ -1,0 +1,58 @@
+name: Testnet operator
+description: Register a full node or ask about joining PointPay testnet (pointpay-dedicated-1)
+title: "[Testnet] "
+labels: ["testnet", "operators"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Testnet only** — chain ID `pointpay-dedicated-1`. Mainnet gentx is not open.
+        Join guide: https://testnet-explorer.pointpay.exchange/join.html
+        Docs: [TESTNET_OPERATORS.md](https://github.com/pointpay-hub/pointpay-chain/blob/main/chain/TESTNET_OPERATORS.md)
+
+  - type: input
+    id: moniker
+    attributes:
+      label: Moniker
+      description: Public node name shown in explorer
+      placeholder: pp-community-node-1
+    validations:
+      required: true
+
+  - type: input
+    id: peer
+    attributes:
+      label: Peer string
+      description: "<node_id>@<public_ip>:26656 — from verify-testnet-sync.sh after sync"
+      placeholder: abc123...@1.2.3.4:26656
+    validations:
+      required: true
+
+  - type: dropdown
+    id: role
+    attributes:
+      label: Role
+      options:
+        - Full node (non-validating)
+        - Full node + interested in validator later
+        - Validator candidate (testnet create-validator)
+    validations:
+      required: true
+
+  - type: input
+    id: contact
+    attributes:
+      label: Contact
+      description: GitHub handle or email
+    validations:
+      required: true
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes
+      description: VPS spec, sync status output, or questions
+      placeholder: |
+        Ubuntu 22.04, 4GB RAM, catching_up=false, height matches network tip
+    validations:
+      required: false

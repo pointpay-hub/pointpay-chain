@@ -1,7 +1,8 @@
 # PointPay Chain — Mainnet program (`pointpay-1`)
 
-**Status:** Preparation only. **Not launched.**  
-Today’s live node `pointpay-dedicated-1` is **testnet / dedicated_dev** — do **not** label it mainnet.
+**Status:** **Parked** until product growth (users + funding). Prep docs remain; do **not** run gentx or flip venue to mainnet.
+
+Today’s live node `pointpay-dedicated-1` is **testnet / dedicated_dev**. Venue PNP is the complete ship without this ceremony.
 
 ## Non-negotiable before `PNP_CHAIN_STATUS=mainnet`
 

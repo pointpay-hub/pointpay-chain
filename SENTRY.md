@@ -68,5 +68,8 @@ Rebuild sentry against `pointpay-1` genesis (new home dir). Do **not** reuse tes
 
 | Item | State |
 |------|--------|
-| Docs + `_deploy/bootstrap-sentry.mjs` | Ready |
-| Live company sentry VPS | **Waiting** — paste host/SSH in ops chat, then run bootstrap |
+| Docs + `_deploy/ops/66-bootstrap-anonvm-sentry.mjs` | Ready |
+| Live company sentry VPS | **Synced** — `31.59.151.61` (`pp-sentry-server1`) |
+| Peer in public `peers.json` | **Published** |
+
+See [TESTNET_STATUS.md](./TESTNET_STATUS.md) for full checklist.

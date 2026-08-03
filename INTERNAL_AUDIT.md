@@ -112,8 +112,6 @@ Signed: PointPay Hub (self-audit complete for Phase F prep)
 
 ## After this pack
 
-Next (ordered):
-1. Paste 2nd VPS → `node _deploy/bootstrap-sentry.mjs` → `publish-peers.mjs` ([SENTRY.md](./SENTRY.md)).
-2. Recruit external full nodes via GitHub issue #1; soak testnet.
-3. Collect ≥10 external gentxs → freeze `pointpay-1` → then flip DNS + `PNP_CHAIN_STATUS=mainnet`.
-4. Bridge Phase G last.
+**Parked (users + funding later):** sentry VPS, external validators, gentx, `pointpay-1` mainnet label, Phase G bridge.
+
+**Product now:** venue / custodial PNP is the complete ship — see [SUPPORT_LIVE_VS_MAINNET.md](./SUPPORT_LIVE_VS_MAINNET.md) + [ROADMAP.md](./ROADMAP.md) freeze. Keep `PNP_CHAIN_STATUS=dedicated_dev`.

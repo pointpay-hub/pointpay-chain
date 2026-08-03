@@ -22,19 +22,67 @@
         <div class="drop">
           <button type="button">Blockchain ▾</button>
           <div class="drop-menu">
+            <a href="#/txs">Transactions</a>
+            <a href="#/pending">Pending Transactions</a>
             <a href="#/blocks">View Blocks</a>
-            <a href="#/txs">View Transactions</a>
-            <a href="#/">Latest Feed</a>
+            <a href="#/accounts">Top Accounts</a>
+            <a href="#/validators">Validators</a>
+            <span class="drop-sep">Cosmos chain · no EVM internals</span>
           </div>
         </div>
-        <a href="#/validators">Validators</a>
-        <a href="https://api-testnet.pointpay.exchange/" target="_blank" rel="noopener">API</a>
         <div class="drop">
-          <button type="button">More ▾</button>
+          <button type="button">Tokens ▾</button>
           <div class="drop-menu">
-            <a href="https://pointpay.exchange/pnp" target="_blank" rel="noopener">PNP Hub</a>
-            <a href="https://pointpay.exchange/explorer" target="_blank" rel="noopener">Venue PNPScan</a>
-            <a href="https://rpc-testnet.pointpay.exchange/" target="_blank" rel="noopener">RPC Gateway</a>
+            <a href="#/token/pnp">PNP (Native)</a>
+          </div>
+        </div>
+        <div class="drop">
+          <button type="button">Validators ▾</button>
+          <div class="drop-menu">
+            <a href="#/validators">Validators Leaderboard</a>
+            <a href="#/validators/set">View Validators Set Info</a>
+          </div>
+        </div>
+        <a href="#/tools/api-docs">API</a>
+        <div class="drop drop-mega">
+          <button type="button">More ▾</button>
+          <div class="drop-menu mega-menu">
+            <div class="mega-grid">
+              <div class="mega-col">
+                <h4>Converters</h4>
+                <a href="#/tools/unit">Unit Converter</a>
+                <a href="#/tools/base64">Base64 Converter</a>
+                <a href="#/tools/block-date">Block &amp; Date Converter</a>
+                <a href="#/tools/utf8">UTF-8 Converter</a>
+                <a href="#/tools/msg-type">Message Type Lookup</a>
+              </div>
+              <div class="mega-col">
+                <h4>Developers</h4>
+                <a href="#/tools/api-docs">API Documentation</a>
+                <a href="#/tools/verify-contract">Verify Contract</a>
+                <a href="#/tools/contract-diff">Contract Diff Checker</a>
+                <a href="#/tools/similar-contract">Similar Contract Search</a>
+                <a href="#/tools/vyper">Vyper Online Compiler</a>
+                <a href="#/tools/bytecode">Bytecode to Opcode</a>
+                <a href="#/tools/broadcast">Broadcast Transaction</a>
+              </div>
+              <div class="mega-col">
+                <h4>Tools &amp; Services</h4>
+                <a href="#/tools/csv-export">CSV Export</a>
+                <a href="#/tools/tx-decoder">Input Data Decoder</a>
+                <a href="#/tools/tx-encoder">Message Builder <span class="mega-beta">Beta</span></a>
+                <a href="#/tools/balance">Account Balance Checker</a>
+                <a href="#/tools/supply">Token Supply Checker</a>
+                <a href="#/tools/token-standard">Token Standard Checker</a>
+              </div>
+            </div>
+            <div class="mega-foot">
+              <a href="/join.html">Join Testnet</a>
+              <a href="https://pointpay.exchange/pnp" target="_blank" rel="noopener">PNP Hub</a>
+              <a href="https://pointpay.exchange/explorer" target="_blank" rel="noopener">Venue PNPScan</a>
+              <a href="https://testnet-explorer.pointpay.exchange/genesis.json" target="_blank" rel="noopener">Genesis</a>
+              <a href="https://testnet-explorer.pointpay.exchange/peers.json" target="_blank" rel="noopener">Peers</a>
+            </div>
           </div>
         </div>
       </nav>
@@ -122,13 +170,56 @@
       <ul class="feed-list" id="fullList"></ul>
     </section>
 
-    <section class="card feed hidden" id="validatorsPanel">
-      <div class="feed-head">
-        <h2>Validators</h2>
+    <section class="card hidden" id="validatorsPanel">
+      <div class="val-head">
+        <div>
+          <h2 id="validatorsTitle">Validators Top Leaderboard (Blocks Validated)</h2>
+          <p class="val-sub" id="validatorsSub">Loading…</p>
+        </div>
         <a href="#/" class="back">← Back to Home</a>
       </div>
-      <ul class="feed-list" id="validatorList"></ul>
+      <div class="val-table-wrap" id="validatorTableWrap">
+        <table class="val-table" id="validatorTable">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Address</th>
+              <th>Voting Power</th>
+              <th>First Block</th>
+              <th>Last Block</th>
+              <th>1 Day</th>
+              <th>7 Days</th>
+              <th>30 Days</th>
+              <th>Active</th>
+            </tr>
+          </thead>
+          <tbody id="validatorList"></tbody>
+        </table>
+      </div>
+      <div class="val-set hidden" id="validatorSetInfo"></div>
     </section>
+
+    <section class="card feed hidden" id="pendingPanel">
+      <div class="feed-head">
+        <h2>Pending Transactions</h2>
+        <a href="#/" class="back">← Back to Home</a>
+      </div>
+      <p class="panel-note">Mempool view via Tendermint RPC · unconfirmed txs waiting for the next block.</p>
+      <ul class="feed-list" id="pendingList"></ul>
+    </section>
+
+    <section class="card feed hidden" id="accountsPanel">
+      <div class="feed-head">
+        <h2>Top Accounts</h2>
+        <a href="#/" class="back">← Back to Home</a>
+      </div>
+      <p class="panel-note">Ranked by <code>upnp</code> balance among addresses seen in recent blocks + bonded validators.</p>
+      <ul class="feed-list" id="accountList"></ul>
+    </section>
+
+    <section class="card detail hidden" id="tokenPanel"></section>
+
+    <section class="card detail hidden" id="toolsPanel"></section>
   </main>
 
   <footer class="footer">
@@ -144,6 +235,7 @@
       </div>
     </div>
   </footer>
+  <script src="/tools.js"></script>
   <script src="/app.js"></script>
 </body>
 </html>

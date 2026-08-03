@@ -1,0 +1,36 @@
+# PointPay Chain — Ignite config (scaffold target)
+
+# Run on Linux (Docker or VPS): see scripts/bootstrap-linux.sh
+# Address prefix pnp → bech32 pnp1...
+# Native denom: upnp (1 PNP = 1_000_000 upnp) — 6 decimals, Cosmos convention
+
+version: 1
+validation: sovereign
+
+accounts:
+  - name: alice
+    coins: ["0upnp"] # real genesis allocations come from genesis/economy — not faucet whales
+  - name: bob
+    coins: ["0upnp"]
+
+faucet:
+  name: alice
+  coins: ["0upnp"] # faucet disabled for security-minded testnet until explicit QA faucet account
+
+client:
+  typescript:
+    path: ts-client
+  openapi:
+    path: docs/static/openapi.json
+
+validators:
+  - name: alice
+    bonded: "1000000upnp" # bootstrap bond from genesis allocation ceremony only
+
+build:
+  proto:
+    path: proto
+  main: cmd/pointpayd
+
+# Module scaffolding (applied by bootstrap):
+# - pnp: economy invariants (max supply, vaults, no admin mint)

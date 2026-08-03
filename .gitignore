@@ -2,3 +2,9 @@ node_modules/
 *.exe
 bin/
 .idea/
+
+# Local ops config — never commit real passwords
+chain-server.config.json
+scripts/ops/*.bin
+scripts/ops/pointpayd.bin
+**/__pycache__/

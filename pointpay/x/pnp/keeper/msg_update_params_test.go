@@ -32,12 +32,24 @@ func TestMsgUpdateParams(t *testing.T) {
 			expErrMsg: "invalid authority",
 		},
 		{
-			name: "send enabled param",
+			name: "reject empty params (max supply must stay DefaultMaxSupply)",
 			input: &types.MsgUpdateParams{
 				Authority: k.GetAuthority(),
 				Params:    types.Params{},
 			},
-			expErr: false,
+			expErr:    true,
+			expErrMsg: "max supply is immutable",
+		},
+		{
+			name: "reject raised max supply",
+			input: &types.MsgUpdateParams{
+				Authority: k.GetAuthority(),
+				Params: types.Params{
+					MaxSupply: types.DefaultMaxSupply + 1,
+				},
+			},
+			expErr:    true,
+			expErrMsg: "max supply is immutable",
 		},
 		{
 			name: "all good",
